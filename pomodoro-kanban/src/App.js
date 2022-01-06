@@ -2,6 +2,8 @@ import React, {useState} from 'react';
 import {DragDropContext, Droppable, Draggable} from 'react-beautiful-dnd'
 //import uuid from 'uuid/v4';
 import { v4 as uuid } from 'uuid';
+import Card from 'react-bootstrap/Card';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const itemsFromBackend = [
 	{id: uuid(), content: 'First task', desc:'This is a test.'},
@@ -70,7 +72,7 @@ function App() {
 	  	{Object.entries(columns).map(([id, column]) =>{
 		 return(
 		 <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-		 <h2> {column.name} </h2>
+		 <h2 class="mb-3"> {column.name} </h2>
 			<div style={{margin: 8}}>
 		 	<Droppable droppableId={id} key={id}>
 	  			{(provided, snapshot)=>{
@@ -96,15 +98,19 @@ function App() {
 							{...provided.dragHandleProps}
 style={{
 	   userSelect: 'none',
-	   padding: 16,
-	   margin: '0 0 8px 0',
-	   minHeight: '50px',
-	   backgroundColor: snapshot.isDragging ? '#263B4A' : '#456C86',
-	   color: 'white',
+	   margin: '5px',
 	   ...provided.draggableProps.style
 	  }}>
-		  <h3> {item.content} </h3>
-		  <p> {item.desc} </p>
+		  
+		  <Card>
+  <Card.Body>
+    <Card.Title>{item.content}</Card.Title>
+    <Card.Text>
+      {item.desc}
+    </Card.Text>
+  </Card.Body>
+</Card>
+
 </div>
 						   )
 						  }}
