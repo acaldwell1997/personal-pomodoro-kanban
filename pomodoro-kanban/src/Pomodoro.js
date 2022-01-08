@@ -3,8 +3,8 @@
 import React, {useState, useEffect} from "react";
 
 export default function Pomodoro(){
-	const[minutes, setMinutes] = useState(25);
-	const [seconds, setSeconds] = useState(0);
+	const[minutes, setMinutes] = useState(0);
+	const [seconds, setSeconds] = useState(5);
 	const[displayMessage, setDisplayMessage] = useState(false);
 	
 	useEffect(()=>{
@@ -29,12 +29,12 @@ export default function Pomodoro(){
 		}, 1000)
 	},[seconds]);
 	
-	const timerMinutes = minutes < 10 ? `05{minutes}` : minutes;
-	const timerSeconds = seconds < 10 ? `05{seconds}` : seconds;
+	const timerMinutes = minutes < 10 ? `0${minutes}` : minutes;
+	const timerSeconds = seconds < 10 ? `0${seconds}` : seconds;
 	
 	return <div className="pomodoro">
 			<div className="message">
-				{displayMessage &&  <div>Break time! Next session starts in </div>}
+				{displayMessage && <div>Break time! Next session starts in: </div>}
 				</div>
 				<div className="timer">{timerMinutes}:{timerSeconds}</div>
 		</div>;
