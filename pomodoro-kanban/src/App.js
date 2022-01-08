@@ -6,19 +6,14 @@ import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
+import Pomodoro from './Pomodoro'
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const backlogItems = [
-	{id: uuid(), content: 'First task', desc:'This is a test.'},
-	{id: uuid(), content: 'Second task', desc:'Hope it works.'}
 ];
 const progressItems = [
-	{id: uuid(), content: 'First task', desc:'This is a test.'},
-	{id: uuid(), content: 'Second task', desc:'Hope it works.'}
 ];
 const completeItems = [
-	{id: uuid(), content: 'First task', desc:'This is a test.'},
-	{id: uuid(), content: 'Second task', desc:'Hope it works.'}
 ];
 const columnsFromBackend = 
 	{
@@ -79,9 +74,30 @@ const onDragEnd = (result, columns, setColumns) => {
 
 function AddModal() {
   const [show, setShow] = useState(false);
-
+  
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+  const addTask = () => {
+	  setShow(false);
+	  let group = document.querySelector('select').value;
+	  let content = document.querySelector('#content').value;
+	  let desc = document.querySelector('#desc').value;
+	  console.log(group)
+	    switch(group) {
+    case 'Backlog':
+	  console.log(content)		
+      backlogItems.push({id: uuid(), content:content, desc:desc}); 
+	  this.setState({backlogItems: [...this.state.backlogItems, {id: uuid(), content:content, desc:desc}]});
+    case 'In Progress':
+      progressItems.push({id: uuid(), content:content, desc:desc});
+	  this.setState({progressItems: [...this.state.progressItems, {id: uuid(), content:content, desc:desc}]});
+	case 'Complete':
+      completeItems.push({id: uuid(), content:content, desc:desc});	
+      this.setState({completeItems: [...this.state.completeItems, {id: uuid(), content:content, desc:desc}]});
+  }
+	  
+  }
+
 
   return (
     <>
@@ -92,12 +108,12 @@ function AddModal() {
         </Modal.Header>
         <Modal.Body>
 	  <Form>
-  <Form.Group className="mb-3" controlId="formBasicEmail">
+  <Form.Group className="mb-3" controlId="content">
     <Form.Label>Title</Form.Label>
     <Form.Control type="text" placeholder="Task Title" />
   </Form.Group>
 
-  <Form.Group className="mb-3" controlId="formBasicPassword">
+  <Form.Group className="mb-3" controlId="desc">
     <Form.Label>Description</Form.Label>
     <Form.Control as="textarea" rows={3} placeholder="Task Description" />
   </Form.Group>
@@ -115,17 +131,19 @@ function AddModal() {
           <Button variant="outline-secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button variant="outline-primary" onClick={handleClose}>
+          <Button variant="outline-primary" id="save" onClick={addTask}>
             Save Changes
           </Button>
         </Modal.Footer>
       </Modal>
     </>
+	  
   );
 }
 
 function App() {
 	const [columns, setColumns] = useState(columnsFromBackend);
+	
   return (
     <div style={{display:'flex',justifyContent:'center', height:'100%'}}>
 	  <DragDropContext onDragEnd={result => onDragEnd(result, columns, setColumns)}>
@@ -134,7 +152,7 @@ function App() {
 		 <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
 				 
 			 
-		 <h2 class="mb-3"> {column.name} </h2>
+		 <h2 className="mb-3"> {column.name} </h2>
 
 			<div style={{margin: 8}}>
 		 	<Droppable droppableId={id} key={id}>
@@ -170,7 +188,7 @@ style={{
     <Card.Title>{item.content}</Card.Title>
     <Card.Text>
       {item.desc}
-    </Card.Text>
+    </Card.Text> 
   </Card.Body>
 </Card>
 
@@ -189,10 +207,12 @@ style={{
 	<div>
 		  
 <AddModal />
+				
     </div>
 			</div>
 		 )})}
 	  </DragDropContext>
+<Pomodoro />
     </div>
   );
 }
