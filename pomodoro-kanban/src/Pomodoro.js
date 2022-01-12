@@ -5,8 +5,8 @@ import Button from 'react-bootstrap/Button';
 
 
 export default function Pomodoro(){
-	const[minutes, setMinutes] = useState(0);
-	const [seconds, setSeconds] = useState(5);
+	const[minutes, setMinutes] = useState(25);
+	const [seconds, setSeconds] = useState(0);
 	const[displayMessage, setDisplayMessage] = useState(false);
 	const[started, setStarted] = useState(false);
 	const isMounted = useRef(true) 
