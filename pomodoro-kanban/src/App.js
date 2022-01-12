@@ -36,13 +36,13 @@ const columnsFromBackend =
 const onDragEnd = (result, columns, setColumns) => {
 	if(!result.destination) return;
 	const {source, destination} = result;
+	console.log(columns)
 	if(source.droppableId !== destination.droppableId){
 		const sourceColumn = columns[source.droppableId];
 		const destColumn = columns[destination.droppableId];
 		const sourceItems = [...sourceColumn.items];
 		const destItems = [...destColumn.items];
 		const [removed] = sourceItems.splice(source.index, 1);
-		
 		destItems.splice(destination.index, 0, removed);
 		setColumns({
 			...columns,
@@ -74,6 +74,10 @@ const onDragEnd = (result, columns, setColumns) => {
 
 function AddModal() {
   const [show, setShow] = useState(false);
+  const [backlogItem, setBacklogItem] = useState(backlogItems);
+  const [progressItem, setProgressItem] = useState(backlogItems);
+  const [completeItem, setCompleteItem] = useState(backlogItems);
+  const [columns, setColumns] = useState(columnsFromBackend);
   
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -82,18 +86,16 @@ function AddModal() {
 	  let group = document.querySelector('select').value;
 	  let content = document.querySelector('#content').value;
 	  let desc = document.querySelector('#desc').value;
-	  console.log(group)
+	  
 	    switch(group) {
-    case 'Backlog':
-	  console.log(content)		
-      backlogItems.push({id: uuid(), content:content, desc:desc}); 
-	  this.setState({backlogItems: [...this.state.backlogItems, {id: uuid(), content:content, desc:desc}]});
+    case 'Backlog':	
+      this.backlogItem.push({id: uuid(), content:content, desc:desc}); 
+	  this.setBacklogItem({backlogItems: [...this.backlogItem, {id: uuid(), content:content, desc:desc}]});
     case 'In Progress':
-      progressItems.push({id: uuid(), content:content, desc:desc});
-	  this.setState({progressItems: [...this.state.progressItems, {id: uuid(), content:content, desc:desc}]});
+      this.progressItem.push({id: uuid(), content:content, desc:desc});
+	  this.setProgressItem({progressItems: [...this.progressItem, {id: uuid(), content:content, desc:desc}]});
 	case 'Complete':
-      completeItems.push({id: uuid(), content:content, desc:desc});	
-      this.setState({completeItems: [...this.state.completeItems, {id: uuid(), content:content, desc:desc}]});
+      this.setCompleteItem({completeItems: [...this.completeItem, {id: uuid(), content:content, desc:desc}]});		
   }
 	  
   }
@@ -145,7 +147,7 @@ function App() {
 	const [columns, setColumns] = useState(columnsFromBackend);
 	
   return (
-    <div style={{display:'flex',justifyContent:'center', height:'100%'}}>
+    <div style={{display:'flex',justifyContent:'center', height:'100%', marginTop: '5%'}}>
 	  <DragDropContext onDragEnd={result => onDragEnd(result, columns, setColumns)}>
 	  	{Object.entries(columns).map(([id, column]) =>{
 		 return(
