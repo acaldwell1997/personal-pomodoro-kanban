@@ -10,8 +10,11 @@ import Pomodoro from './Pomodoro'
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const backlogItems = [
+	{id: uuid(), content: 'Do Dishes', desc:'Load items in dishwasher.'},
+	{id: uuid(), content: 'Do Laundry', desc:'Load items in washing machine.'}
 ];
 const progressItems = [
+	{id: uuid(), content: 'Feed the Cats', desc:'They are always hungry..'},
 ];
 const completeItems = [
 ];
@@ -36,7 +39,6 @@ const columnsFromBackend =
 const onDragEnd = (result, columns, setColumns) => {
 	if(!result.destination) return;
 	const {source, destination} = result;
-	console.log(columns)
 	if(source.droppableId !== destination.droppableId){
 		const sourceColumn = columns[source.droppableId];
 		const destColumn = columns[destination.droppableId];
